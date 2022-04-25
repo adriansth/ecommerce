@@ -35,6 +35,16 @@ app.get('/products/:id', (req, res, next) => {
   res.status(404).send('Item not found');
 });
 
+app.post('/products', (req, res, next) => {
+  const newElement = req.body;
+  if (newElement) {
+    products.push(newElement);
+    res.status(200).send('Item created');
+  } else {
+    res.status(404).send('Item not found');
+  }
+});
+
 app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`);
 });
