@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const getElementById = require('./utils');
 
 const PORT = 4001;
 
@@ -16,16 +17,6 @@ const products = [
     }
 ]
 
-const getIndexById = (elementId, arr) => {
-    for (let i = 0; i < arr.length; i++) {
-        if (arr[i].id === elementId) {
-            return i;
-        } else {
-            return -1;
-        }
-    }
-}
-
 app.get('/products', (req, res, next) => {
     if (products) {
         res.send(products);
@@ -35,12 +26,13 @@ app.get('/products', (req, res, next) => {
 });
 
 app.get('/products/:id', (req, res, next) => {
-    const idx = getIndexById(req.params, products);
-    if (idx !== -1) {
-        res.send(products[idx]);
-    } else {
-        res.status(404).send('Product not found');
+  const id = req.params.id;
+  for (let product of products) {
+    if (product.id == id) {
+      res.send(product);
     }
+  }
+  res.status(404).send('Item not found');
 });
 
 app.listen(PORT, () => {
